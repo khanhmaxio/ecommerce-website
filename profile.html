@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản của tôi - SportShop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-top: 100px;
+        }
+        
+        .profile-header {
+            margin-bottom: 30px;
+        }
+        
+        .profile-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .breadcrumb {
+            color: #6c757d;
+        }
+        
+        .breadcrumb a {
+            color: #2c5aa0;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .profile-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 40px;
+        }
+        
+        .profile-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+        
+        .profile-avatar {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #2c5aa0, #1e3d72);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 15px;
+        }
+        
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .profile-email {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .profile-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .profile-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .profile-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-menu a:hover,
+        .profile-menu a.active {
+            background: #2c5aa0;
+            color: white;
+        }
+        
+        .profile-menu i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .profile-main {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .profile-section {
+            display: none;
+        }
+        
+        .profile-section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            flex: 1;
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2c5aa0;
+        }
+        
+        .form-group input:disabled {
+            background: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .btn-save {
+            background: linear-gradient(45deg, #2c5aa0, #1e3d72);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: #2c5aa0;
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .recent-orders {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .recent-orders h4 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .order-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .order-summary:last-child {
+            margin-bottom: 0;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .order-date {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .order-amount {
+            font-weight: bold;
+            color: #2c5aa0;
+        }
+        
+        .password-form {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .password-form h4 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .delete-account {
+            background: #f8d7da;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .delete-account h4 {
+            color: #721c24;
+            margin-bottom: 15px;
+        }
+        
+        .delete-account p {
+            color: #721c24;
+            margin-bottom: 15px;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .profile-sidebar {
+                position: static;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-running"></i> SportShop</h1>
+                </div>
+                
+                <nav class="nav">
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">Danh mục <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="index.html?category=ao">Áo thể thao</a></li>
+                                <li><a href="index.html?category=quan">Quần thể thao</a></li>
+                                <li><a href="index.html?category=giay">Giày thể thao</a></li>
+                                <li><a href="index.html?category=phu-kien">Phụ kiện</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" id="auth-link">Đăng nhập</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="cart-icon">
+                        <a href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1><i class="fas fa-user-circle"></i> Tài khoản của tôi</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Trang chủ</a> / Tài khoản
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-sidebar">
+                <div class="profile-avatar">
+                    <div class="avatar-circle" id="avatar-circle">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-name" id="profile-name">Người dùng</div>
+                    <div class="profile-email" id="profile-email">user@email.com</div>
+                </div>
+                
+                <ul class="profile-menu">
+                    <li><a href="#" data-section="overview" class="active"><i class="fas fa-tachometer-alt"></i> Tổng quan</a></li>
+                    <li><a href="#" data-section="info"><i class="fas fa-user-edit"></i> Thông tin cá nhân</a></li>
+                    <li><a href="#" data-section="orders"><i class="fas fa-box"></i> Đơn hàng</a></li>
+                    <li><a href="#" data-section="security"><i class="fas fa-shield-alt"></i> Bảo mật</a></li>
+                    <li><a href="orders.html"><i class="fas fa-list"></i> Xem tất cả đơn hàng</a></li>
+                    <li><a href="#" onclick="auth.logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                </ul>
+            </div>
+
+            <div class="profile-main">
+                <!-- Overview Section -->
+                <div class="profile-section active" id="overview-section">
+                    <h2 class="section-title">Tổng quan tài khoản</h2>
+                    
+                    <div class="stats-grid" id="stats-grid">
+                        <!-- Stats will be loaded here -->
+                    </div>
+                    
+                    <div class="recent-orders" id="recent-orders">
+                        <h4>Đơn hàng gần đây</h4>
+                        <!-- Recent orders will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Personal Info Section -->
+                <div class="profile-section" id="info-section">
+                    <h2 class="section-title">Thông tin cá nhân</h2>
+                    
+                    <div class="error-message" id="info-error-message"></div>
+                    <div class="success-message" id="info-success-message"></div>
+                    
+                    <form id="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">Tên</label>
+                                <input type="text" id="first-name" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Họ</label>
+                                <input type="text" id="last-name" name="lastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" disabled>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Số điện thoại</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="date-of-birth">Ngày sinh</label>
+                                <input type="date" id="date-of-birth" name="dateOfBirth">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gender">Giới tính</label>
+                                <select id="gender" name="gender">
+                                    <option value="">Chọn giới tính</option>
+                                    <option value="male">Nam</option>
+                                    <option value="female">Nữ</option>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Địa chỉ</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                        
+                        <button type="submit" class="btn-save">
+                            <i class="fas fa-save"></i> Lưu thay đổi
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Orders Section -->
+                <div class="profile-section" id="orders-section">
+                    <h2 class="section-title">Đơn hàng của tôi</h2>
+                    
+                    <div id="orders-overview">
+                        <!-- Orders overview will be loaded here -->
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <a href="orders.html" class="btn-save">
+                            <i class="fas fa-list"></i> Xem tất cả đơn hàng
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="profile-section" id="security-section">
+                    <h2 class="section-title">Bảo mật tài khoản</h2>
+                    
+                    <div class="password-form">
+                        <h4>Đổi mật khẩu</h4>
+                        
+                        <div class="error-message" id="password-error-message"></div>
+                        <div class="success-message" id="password-success-message"></div>
+                        
+                        <form id="password-form">
+                            <div class="form-group">
+                                <label for="current-password">Mật khẩu hiện tại</label>
+                                <input type="password" id="current-password" name="currentPassword" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="new-password">Mật khẩu mới</label>
+                                <input type="password" id="new-password" name="newPassword" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirm-password">Xác nhận mật khẩu mới</label>
+                                <input type="password" id="confirm-password" name="confirmPassword" required>
+                            </div>
+                            
+                            <button type="submit" class="btn-save">
+                                <i class="fas fa-key"></i> Đổi mật khẩu
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="delete-account">
+                        <h4>Xóa tài khoản</h4>
+                        <p>Hành động này không thể hoàn tác. Tất cả dữ liệu và đơn hàng của bạn sẽ bị xóa vĩnh viễn.</p>
+                        <button class="btn-danger" onclick="deleteAccount()">
+                            <i class="fas fa-trash"></i> Xóa tài khoản
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/orders.js"></script>
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra đăng nhập
+            if (!auth.isLoggedIn()) {
+                alert('Bạn cần đăng nhập để truy cập trang này!');
+                window.location.href = 'login.html?return=' + encodeURIComponent(window.location.href);
+                return;
+            }
+
+            currentUser = auth.getCurrentUser();
+            auth.updateAuthUI();
+            cart.updateCartCount();
+            
+            loadUserProfile();
+            setupEventListeners();
+            loadOverviewData();
+        });
+
+        function setupEventListeners() {
+            // Profile menu navigation
+            document.querySelectorAll('.profile-menu a[data-section]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const section = this.dataset.section;
+                    showSection(section);
+                    
+                    // Update active menu item
+                    document.querySelectorAll('.profile-menu a').forEach(a => a.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Profile form submission
+            document.getElementById('profile-form').addEventListener('submit', handleProfileUpdate);
+            
+            // Password form submission
+            document.getElementById('password-form').addEventListener('submit', handlePasswordChange);
+
+            // Search functionality
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('search-input');
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function() {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+                    }
+                });
+            }
+        }
+
+        function loadUserProfile() {
+            if (!currentUser) return;
+
+            // Update sidebar info
+            document.getElementById('profile-name').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('profile-email').textContent = currentUser.email;
+            
+            // Update avatar
+            const avatarCircle = document.getElementById('avatar-circle');
+            const initials = `${currentUser.firstName.charAt(0)}${currentUser.lastName.charAt(0)}`.toUpperCase();
+            avatarCircle.textContent = initials;
+
+            // Fill form fields
+            document.getElementById('first-name').value = currentUser.firstName || '';
+            document.getElementById('last-name').value = currentUser.lastName || '';
+            document.getElementById('email').value = currentUser.email || '';
+            document.getElementById('phone').value = currentUser.phone || '';
+            document.getElementById('date-of-birth').value = currentUser.dateOfBirth || '';
+            document.getElementById('gender').value = currentUser.gender || '';
+            document.getElementById('address').value = currentUser.address || '';
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.profile-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(`${sectionName}-section`).classList.add('active');
+            
+            // Load section-specific data
+            if (sectionName === 'overview') {
+                loadOverviewData();
+            } else if (sectionName === 'orders') {
+                loadOrdersOverview();
+            }
+        }
+
+        function loadOverviewData() {
+            const userOrders = orderManager.getOrdersByUserId(currentUser.id);
+            const totalSpent = orderManager.getTotalSpentByUser(currentUser.id);
+            
+            // Load stats
+            const statsGrid = document.getElementById('stats-grid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-box"></i></div>
+                    <div class="stat-number">${userOrders.length}</div>
+                    <div class="stat-label">Tổng đơn hàng</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="stat-number">${formatPrice(totalSpent)}</div>
+                    <div class="stat-label">Tổng chi tiêu</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-truck"></i></div>
+                    <div class="stat-number">${orderManager.getOrderCountByStatus(currentUser.id, 'shipping')}</div>
+                    <div class="stat-label">Đang giao</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-number">${orderManager.getOrderCountByStatus(currentUser.id, 'delivered')}</div>
+                    <div class="stat-label">Đã giao</div>
+                </div>
+            `;
+
+            // Load recent orders
+            const recentOrders = userOrders.slice(0, 5);
+            const recentOrdersContainer = document.getElementById('recent-orders');
+            
+            if (recentOrders.length === 0) {
+                recentOrdersContainer.innerHTML = `
+                    <h4>Đơn hàng gần đây</h4>
+                    <p>Bạn chưa có đơn hàng nào. <a href="index.html">Bắt đầu mua sắm ngay!</a></p>
+                `;
+            } else {
+                let ordersHTML = '<h4>Đơn hàng gần đây</h4>';
+                recentOrders.forEach(order => {
+                    ordersHTML += `
+                        <div class="order-summary">
+                            <div>
+                                <div class="order-id">#${order.id}</div>
+                                <div class="order-date">${orderManager.formatDate(order.createdAt)}</div>
+                            </div>
+                            <div class="order-amount">${formatPrice(order.total)}</div>
+                        </div>
+                    `;
+                });
+                recentOrdersContainer.innerHTML = ordersHTML;
+            }
+        }
+
+        function loadOrdersOverview() {
+            const userOrders = orderManager.getOrdersByUserId(currentUser.id);
+            const ordersOverview = document.getElementById('orders-overview');
+            
+            if (userOrders.length === 0) {
+                ordersOverview.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: #6c757d;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 20px; color: #e9ecef;"></i>
+                        <h4>Bạn chưa có đơn hàng nào</h4>
+                        <p>Hãy khám phá và mua sắm những sản phẩm tuyệt vời!</p>
+                    </div>
+                `;
+            } else {
+                let ordersHTML = '';
+                userOrders.slice(0, 10).forEach(order => {
+                    const statusColor = orderManager.getStatusColor(order.status);
+                    const statusName = orderManager.getStatusName(order.status);
+                    
+                    ordersHTML += `
+                        <div class="order-summary" style="cursor: pointer;" onclick="window.open('orders.html?order=${order.id}', '_blank')">
+                            <div>
+                                <div class="order-id">#${order.id}</div>
+                                <div class="order-date">${orderManager.formatDate(order.createdAt)}</div>
+                                <div style="color: ${statusColor}; font-weight: 600; font-size: 14px; margin-top: 5px;">
+                                    ${statusName}
+                                </div>
+                            </div>
+                            <div class="order-amount">${formatPrice(order.total)}</div>
+                        </div>
+                    `;
+                });
+                ordersOverview.innerHTML = ordersHTML;
+            }
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            
+            const errorElement = document.getElementById('info-error-message');
+            const successElement = document.getElementById('info-success-message');
+            
+            // Hide previous messages
+            errorElement.style.display = 'none';
+            successElement.style.display = 'none';
+            
+            const formData = new FormData(e.target);
+            const userData = {
+                firstName: formData.get('firstName').trim(),
+                lastName: formData.get('lastName').trim(),
+                phone: formData.get('phone').trim(),
+                dateOfBirth: formData.get('dateOfBirth'),
+                gender: formData.get('gender'),
+                address: formData.get('address').trim()
+            };
+
+            const result = auth.updateProfile(userData);
+            
+            if (result.success) {
+                successElement.textContent = result.message;
+                successElement.style.display = 'block';
+                
+                // Update current user data
+                currentUser = auth.getCurrentUser();
+                loadUserProfile();
+                
+            } else {
+                errorElement.textContent = result.message;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        function handlePasswordChange(e) {
+            e.preventDefault();
+            
+            const errorElement = document.getElementById('password-error-message');
+            const successElement = document.getElementById('password-success-message');
+            
+            // Hide previous messages
+            errorElement.style.display = 'none';
+            successElement.style.display = 'none';
+            
+            const formData = new FormData(e.target);
+            const currentPassword = formData.get('currentPassword');
+            const newPassword = formData.get('newPassword');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            // Validate passwords match
+            if (newPassword !== confirmPassword) {
+                errorElement.textContent = 'Mật khẩu mới và xác nhận mật khẩu không khớp!';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            const result = auth.changePassword(currentPassword, newPassword);
+            
+            if (result.success) {
+                successElement.textContent = result.message;
+                successElement.style.display = 'block';
+                
+                // Clear form
+                e.target.reset();
+                
+            } else {
+                errorElement.textContent = result.message;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        function deleteAccount() {
+            if (!confirm('Bạn có chắc muốn xóa tài khoản? Hành động này không thể hoàn tác!')) {
+                return;
+            }
+            
+            if (!confirm('Xác nhận lần cuối: Xóa tài khoản và tất cả dữ liệu?')) {
+                return;
+            }
+            
+            // In a real application, this would call an API to delete the account
+            alert('Tính năng xóa tài khoản sẽ được triển khai trong phiên bản tiếp theo.');
+        }
+    </script>
+</body>
+</html>

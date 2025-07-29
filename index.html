@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportShop - Thời trang thể thao</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-running"></i> SportShop</h1>
+                </div>
+                
+                <nav class="nav">
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">Danh mục <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" data-category="ao">Áo thể thao</a></li>
+                                <li><a href="#" data-category="quan">Quần thể thao</a></li>
+                                <li><a href="#" data-category="giay">Giày thể thao</a></li>
+                                <li><a href="#" data-category="phu-kien">Phụ kiện</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" id="auth-link">Đăng nhập</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="cart-icon">
+                        <a href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Bộ sưu tập thể thao mới nhất</h2>
+            <p>Khám phá những sản phẩm thể thao chất lượng cao với giá tốt nhất</p>
+            <button class="btn-primary" onclick="scrollToProducts()">Mua ngay</button>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Danh mục:</label>
+                    <select id="category-filter">
+                        <option value="">Tất cả</option>
+                        <option value="ao">Áo thể thao</option>
+                        <option value="quan">Quần thể thao</option>
+                        <option value="giay">Giày thể thao</option>
+                        <option value="phu-kien">Phụ kiện</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Thương hiệu:</label>
+                    <select id="brand-filter">
+                        <option value="">Tất cả</option>
+                        <option value="Nike">Nike</option>
+                        <option value="Adidas">Adidas</option>
+                        <option value="Puma">Puma</option>
+                        <option value="Under Armour">Under Armour</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Giá:</label>
+                    <select id="price-filter">
+                        <option value="">Tất cả</option>
+                        <option value="0-500000">Dưới 500k</option>
+                        <option value="500000-1000000">500k - 1tr</option>
+                        <option value="1000000-2000000">1tr - 2tr</option>
+                        <option value="2000000-999999999">Trên 2tr</option>
+                    </select>
+                </div>
+                <button id="clear-filters" class="btn-secondary">Xóa bộ lọc</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <div class="container">
+            <h2 class="section-title">Sản phẩm nổi bật</h2>
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+            <div class="loading" id="loading" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i> Đang tải...
+            </div>
+            <div class="no-products" id="no-products" style="display: none;">
+                <p>Không tìm thấy sản phẩm nào.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SportShop</h3>
+                    <p>Chuyên cung cấp trang phục và phụ kiện thể thao chất lượng cao với giá cả hợp lý.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Danh mục</h4>
+                    <ul>
+                        <li><a href="#">Áo thể thao</a></li>
+                        <li><a href="#">Quần thể thao</a></li>
+                        <li><a href="#">Giày thể thao</a></li>
+                        <li><a href="#">Phụ kiện</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Hỗ trợ</h4>
+                    <ul>
+                        <li><a href="#">Liên hệ</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Liên hệ</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> 0123 456 789</p>
+                        <p><i class="fas fa-envelope"></i> info@sportshop.vn</p>
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Đường ABC, Quận 1, TP.HCM</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 SportShop. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

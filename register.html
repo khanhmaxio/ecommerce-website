@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - SportShop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3d72 100%);
+            padding: 20px;
+        }
+        
+        .auth-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .auth-form h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 2rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            flex: 1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2c5aa0;
+        }
+        
+        .btn-auth {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #2c5aa0, #1e3d72);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+        }
+        
+        .auth-links {
+            text-align: center;
+        }
+        
+        .auth-links a {
+            color: #2c5aa0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-home:hover {
+            color: #ffd700;
+        }
+        
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .password-strength.weak {
+            background: #ff4757;
+            width: 33%;
+        }
+        
+        .password-strength.medium {
+            background: #ffa502;
+            width: 66%;
+        }
+        
+        .password-strength.strong {
+            background: #2ed573;
+            width: 100%;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 3px;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .auth-form {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <a href="index.html" class="back-home">
+            <i class="fas fa-arrow-left"></i> Về trang chủ
+        </a>
+        
+        <form class="auth-form" id="register-form">
+            <h1><i class="fas fa-user-plus"></i> Đăng ký</h1>
+            
+            <div class="error-message" id="error-message"></div>
+            <div class="success-message" id="success-message"></div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">Tên *</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName">Họ *</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Số điện thoại</label>
+                <input type="tel" id="phone" name="phone" placeholder="Ví dụ: 0901234567">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mật khẩu * (tối thiểu 6 ký tự)</label>
+                <input type="password" id="password" name="password" required>
+                <div class="password-strength" id="password-strength"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Xác nhận mật khẩu *</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dateOfBirth">Ngày sinh</label>
+                    <input type="date" id="dateOfBirth" name="dateOfBirth">
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Giới tính</label>
+                    <select id="gender" name="gender">
+                        <option value="">Chọn giới tính</option>
+                        <option value="male">Nam</option>
+                        <option value="female">Nữ</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Địa chỉ</label>
+                <input type="text" id="address" name="address" placeholder="Số nhà, đường, quận/huyện, tỉnh/thành phố">
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">
+                    Tôi đồng ý với <a href="#" onclick="showTermsModal()">Điều khoản sử dụng</a> 
+                    và <a href="#" onclick="showPrivacyModal()">Chính sách bảo mật</a> của SportShop *
+                </label>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="newsletter" name="newsletter">
+                <label for="newsletter">
+                    Đăng ký nhận thông tin khuyến mãi và sản phẩm mới qua email
+                </label>
+            </div>
+            
+            <button type="submit" class="btn-auth">
+                <i class="fas fa-user-plus"></i> Đăng ký
+            </button>
+            
+            <div class="auth-links">
+                <p>Đã có tài khoản? <a href="login.html">Đăng nhập ngay</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Terms Modal -->
+    <div class="modal-overlay" id="terms-modal" style="display: none;">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Điều khoản sử dụng</h3>
+                <button class="close-modal" onclick="closeModal('terms-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <h4>1. Giới thiệu</h4>
+                <p>Chào mừng bạn đến với SportShop. Khi sử dụng dịch vụ của chúng tôi, bạn đồng ý tuân thủ các điều khoản sau đây.</p>
+                
+                <h4>2. Tài khoản người dùng</h4>
+                <p>Bạn có trách nhiệm bảo mật thông tin tài khoản và mật khẩu. SportShop không chịu trách nhiệm về các thiệt hại phát sinh do việc sử dụng tài khoản trái phép.</p>
+                
+                <h4>3. Sản phẩm và dịch vụ</h4>
+                <p>Chúng tôi cam kết cung cấp thông tin sản phẩm chính xác. Tuy nhiên, có thể có sai sót về giá cả hoặc thông tin sản phẩm.</p>
+                
+                <h4>4. Thanh toán</h4>
+                <p>Tất cả giao dịch thanh toán được thực hiện qua các cổng thanh toán an toàn. Chúng tôi không lưu trữ thông tin thẻ tín dụng của bạn.</p>
+                
+                <h4>5. Chính sách đổi trả</h4>
+                <p>Sản phẩm có thể được đổi trả trong vòng 30 ngày kể từ ngày mua với điều kiện còn nguyên vẹn và có hóa đơn.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeModal('terms-modal')">Đã hiểu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div class="modal-overlay" id="privacy-modal" style="display: none;">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3>Chính sách bảo mật</h3>
+                <button class="close-modal" onclick="closeModal('privacy-modal')">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <h4>1. Thu thập thông tin</h4>
+                <p>Chúng tôi thu thập thông tin cần thiết để cung cấp dịch vụ tốt nhất cho bạn, bao gồm thông tin cá nhân và thông tin giao dịch.</p>
+                
+                <h4>2. Sử dụng thông tin</h4>
+                <p>Thông tin của bạn được sử dụng để xử lý đơn hàng, cung cấp dịch vụ khách hàng và gửi thông tin khuyến mãi (nếu bạn đồng ý).</p>
+                
+                <h4>3. Bảo vệ thông tin</h4>
+                <p>Chúng tôi áp dụng các biện pháp bảo mật nghiêm ngặt để bảo vệ thông tin cá nhân của bạn khỏi truy cập trái phép.</p>
+                
+                <h4>4. Chia sẻ thông tin</h4>
+                <p>Chúng tôi không bán, trao đổi hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba, trừ khi có yêu cầu từ pháp luật.</p>
+                
+                <h4>5. Quyền của bạn</h4>
+                <p>Bạn có quyền yêu cầu xem, chỉnh sửa hoặc xóa thông tin cá nhân của mình bất kỳ lúc nào.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeModal('privacy-modal')">Đã hiểu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu đã đăng nhập thì chuyển về trang chủ
+            if (auth.isLoggedIn()) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const registerForm = document.getElementById('register-form');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            const passwordInput = document.getElementById('password');
+            const passwordStrength = document.getElementById('password-strength');
+            
+            // Password strength indicator
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                const strength = checkPasswordStrength(password);
+                
+                passwordStrength.className = 'password-strength';
+                if (password.length > 0) {
+                    passwordStrength.classList.add(strength);
+                }
+            });
+            
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Ẩn messages cũ
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+                
+                // Lấy dữ liệu form
+                const formData = new FormData(this);
+                const userData = {
+                    firstName: formData.get('firstName').trim(),
+                    lastName: formData.get('lastName').trim(),
+                    email: formData.get('email').trim(),
+                    phone: formData.get('phone').trim(),
+                    password: formData.get('password'),
+                    confirmPassword: formData.get('confirmPassword'),
+                    dateOfBirth: formData.get('dateOfBirth'),
+                    gender: formData.get('gender'),
+                    address: formData.get('address').trim()
+                };
+                
+                // Kiểm tra điều khoản
+                if (!formData.get('terms')) {
+                    showError('Bạn phải đồng ý với điều khoản sử dụng!');
+                    return;
+                }
+                
+                // Đăng ký
+                const result = auth.register(userData);
+                
+                if (result.success) {
+                    showSuccess(result.message + ' Đang chuyển hướng...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } else {
+                    showError(result.message);
+                }
+            });
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+        
+        function checkPasswordStrength(password) {
+            if (password.length < 6) return 'weak';
+            
+            let score = 0;
+            
+            // Kiểm tra độ dài
+            if (password.length >= 8) score++;
+            
+            // Kiểm tra có chữ hoa
+            if (/[A-Z]/.test(password)) score++;
+            
+            // Kiểm tra có chữ thường
+            if (/[a-z]/.test(password)) score++;
+            
+            // Kiểm tra có số
+            if (/\d/.test(password)) score++;
+            
+            // Kiểm tra có ký tự đặc biệt
+            if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) score++;
+            
+            if (score < 3) return 'weak';
+            if (score < 4) return 'medium';
+            return 'strong';
+        }
+        
+        function showTermsModal() {
+            document.getElementById('terms-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function showPrivacyModal() {
+            document.getElementById('privacy-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    </script>
+    
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            max-height: 90vh;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .modal-body h4 {
+            color: #2c5aa0;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .modal-body h4:first-child {
+            margin-top: 0;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+    </style>
+</body>
+</html>
