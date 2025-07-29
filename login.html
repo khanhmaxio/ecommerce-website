@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - SportShop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3d72 100%);
+            padding: 20px;
+        }
+        
+        .auth-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .auth-form h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #2c5aa0;
+        }
+        
+        .btn-auth {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #2c5aa0, #1e3d72);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .btn-auth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+        }
+        
+        .auth-links {
+            text-align: center;
+        }
+        
+        .auth-links a {
+            color: #2c5aa0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+            color: #999;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e9ecef;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 15px;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+        
+        .back-home:hover {
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <a href="index.html" class="back-home">
+            <i class="fas fa-arrow-left"></i> Về trang chủ
+        </a>
+        
+        <form class="auth-form" id="login-form">
+            <h1><i class="fas fa-sign-in-alt"></i> Đăng nhập</h1>
+            
+            <div class="error-message" id="error-message"></div>
+            <div class="success-message" id="success-message"></div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="btn-auth">
+                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+            </button>
+            
+            <div class="divider">
+                <span>hoặc</span>
+            </div>
+            
+            <div class="auth-links">
+                <p>Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></p>
+                <p><a href="#" onclick="showForgotPasswordModal()">Quên mật khẩu?</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal-overlay" id="forgot-password-modal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Quên mật khẩu</h3>
+                <button class="close-modal" onclick="closeForgotPasswordModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Nhập email của bạn để nhận hướng dẫn đặt lại mật khẩu:</p>
+                <div class="form-group">
+                    <input type="email" id="forgot-email" placeholder="Email của bạn" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeForgotPasswordModal()">Hủy</button>
+                <button class="btn-primary" onclick="sendResetEmail()">Gửi email</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kiểm tra nếu đã đăng nhập thì chuyển về trang chủ
+            if (auth.isLoggedIn()) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const loginForm = document.getElementById('login-form');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                
+                // Ẩn messages cũ
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+                
+                // Validate
+                if (!email || !password) {
+                    showError('Vui lòng nhập đầy đủ thông tin!');
+                    return;
+                }
+                
+                // Đăng nhập
+                const result = auth.login(email, password);
+                
+                if (result.success) {
+                    showSuccess(result.message);
+                    setTimeout(() => {
+                        // Chuyển về trang trước đó hoặc trang chủ
+                        const returnUrl = new URLSearchParams(window.location.search).get('return') || 'index.html';
+                        window.location.href = returnUrl;
+                    }, 1000);
+                } else {
+                    showError(result.message);
+                }
+            });
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+            
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+            }
+        });
+        
+        function showForgotPasswordModal() {
+            document.getElementById('forgot-password-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeForgotPasswordModal() {
+            document.getElementById('forgot-password-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        
+        function sendResetEmail() {
+            const email = document.getElementById('forgot-email').value.trim();
+            
+            if (!email) {
+                alert('Vui lòng nhập email!');
+                return;
+            }
+            
+            // Simulate sending email
+            alert('Hướng dẫn đặt lại mật khẩu đã được gửi đến email của bạn!');
+            closeForgotPasswordModal();
+        }
+    </script>
+    
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+    </style>
+</body>
+</html>
