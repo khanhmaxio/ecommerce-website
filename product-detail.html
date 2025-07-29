@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm - SportShop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-top: 100px;
+        }
+        
+        .breadcrumb {
+            margin-bottom: 20px;
+            color: #6c757d;
+        }
+        
+        .breadcrumb a {
+            color: #2c5aa0;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .product-images {
+            position: relative;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .thumbnail-images {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        
+        .thumbnail.active {
+            border-color: #2c5aa0;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 20px 0;
+        }
+        
+        .product-category {
+            color: #6c757d;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        
+        .product-brand {
+            color: #2c5aa0;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stars {
+            color: #ffd700;
+        }
+        
+        .rating-number {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .review-count {
+            color: #6c757d;
+        }
+        
+        .product-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-bottom: 20px;
+        }
+        
+        .product-description {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .product-options {
+            margin-bottom: 30px;
+        }
+        
+        .option-group {
+            margin-bottom: 20px;
+        }
+        
+        .option-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .size-option {
+            padding: 12px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .size-option:hover {
+            border-color: #2c5aa0;
+            color: #2c5aa0;
+        }
+        
+        .size-option.selected {
+            background: #2c5aa0;
+            border-color: #2c5aa0;
+            color: white;
+        }
+        
+        .size-option.disabled {
+            background: #f8f9fa;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            background: #f8f9fa;
+            border: none;
+            padding: 12px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+        
+        .quantity-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .quantity-input {
+            border: none;
+            padding: 12px 16px;
+            width: 80px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .btn-add-cart {
+            flex: 2;
+            background: linear-gradient(45deg, #2c5aa0, #1e3d72);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-add-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+        }
+        
+        .btn-wishlist {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            color: #6c757d;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 20px;
+        }
+        
+        .btn-wishlist:hover {
+            color: #ff4757;
+            border-color: #ff4757;
+        }
+        
+        .product-features {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list i {
+            color: #2c5aa0;
+            width: 20px;
+        }
+        
+        .reviews-section {
+            border-top: 2px solid #e9ecef;
+            padding-top: 40px;
+        }
+        
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .review-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .reviewer-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .review-date {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .review-text {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .product-title {
+                font-size: 2rem;
+            }
+            
+            .product-price {
+                font-size: 2rem;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+            }
+            
+            .main-image {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-running"></i> SportShop</h1>
+                </div>
+                
+                <nav class="nav">
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">Danh mục <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="index.html?category=ao">Áo thể thao</a></li>
+                                <li><a href="index.html?category=quan">Quần thể thao</a></li>
+                                <li><a href="index.html?category=giay">Giày thể thao</a></li>
+                                <li><a href="index.html?category=phu-kien">Phụ kiện</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" id="auth-link">Đăng nhập</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="cart-icon">
+                        <a href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="product-detail-container">
+        <div class="breadcrumb">
+            <a href="index.html">Trang chủ</a> / 
+            <span id="breadcrumb-category">Sản phẩm</span> / 
+            <span id="breadcrumb-product">Chi tiết</span>
+        </div>
+
+        <div class="product-detail" id="product-detail">
+            <!-- Product content will be loaded here -->
+        </div>
+
+        <div class="reviews-section">
+            <div class="reviews-header">
+                <h2>Đánh giá sản phẩm</h2>
+                <button class="btn-primary" onclick="showReviewModal()">Viết đánh giá</button>
+            </div>
+            <div id="reviews-list">
+                <!-- Reviews will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="modal-overlay" id="review-modal" style="display: none;">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Viết đánh giá</h3>
+                <button class="close-modal" onclick="closeReviewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Đánh giá của bạn:</label>
+                    <div class="star-rating" id="star-rating">
+                        <i class="far fa-star" data-rating="1"></i>
+                        <i class="far fa-star" data-rating="2"></i>
+                        <i class="far fa-star" data-rating="3"></i>
+                        <i class="far fa-star" data-rating="4"></i>
+                        <i class="far fa-star" data-rating="5"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="review-text">Nhận xét:</label>
+                    <textarea id="review-text" rows="4" placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeReviewModal()">Hủy</button>
+                <button class="btn-primary" onclick="submitReview()">Gửi đánh giá</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let currentProduct = null;
+        let selectedSize = null;
+        let currentRating = 0;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductDetail();
+            auth.updateAuthUI();
+            cart.updateCartCount();
+            setupEventListeners();
+        });
+
+        function loadProductDetail() {
+            // Lấy product ID từ localStorage hoặc URL
+            const productId = localStorage.getItem('selectedProductId') || 
+                             new URLSearchParams(window.location.search).get('id');
+            
+            if (!productId) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            currentProduct = getProductById(parseInt(productId));
+            
+            if (!currentProduct) {
+                alert('Không tìm thấy sản phẩm!');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            displayProductDetail();
+            loadReviews();
+            updateBreadcrumb();
+        }
+
+        function displayProductDetail() {
+            const productDetail = document.getElementById('product-detail');
+            
+            productDetail.innerHTML = `
+                <div class="product-images">
+                    <div class="main-image">
+                        <img src="${currentProduct.image}" alt="${currentProduct.name}" id="main-product-image">
+                    </div>
+                    <div class="thumbnail-images">
+                        <div class="thumbnail active">
+                            <img src="${currentProduct.image}" alt="${currentProduct.name}">
+                        </div>
+                        <!-- Thêm ảnh phụ nếu có -->
+                    </div>
+                </div>
+
+                <div class="product-info">
+                    <div class="product-category">${getCategoryName(currentProduct.category)}</div>
+                    <h1 class="product-title">${currentProduct.name}</h1>
+                    <div class="product-brand">${currentProduct.brand}</div>
+                    
+                    <div class="product-rating">
+                        ${generateStarRating(currentProduct.rating)}
+                        <span class="review-count">(${currentProduct.reviews} đánh giá)</span>
+                    </div>
+                    
+                    <div class="product-price">${formatPrice(currentProduct.price)}</div>
+                    
+                    <div class="product-description">
+                        ${currentProduct.description}
+                    </div>
+                    
+                    <div class="product-options">
+                        <div class="option-group">
+                            <label class="option-label">Chọn size:</label>
+                            <div class="size-options">
+                                ${currentProduct.sizes.map(size => 
+                                    `<div class="size-option" data-size="${size}">${size}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <label class="option-label">Số lượng:</label>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1">
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-actions">
+                        <button class="btn-add-cart" onclick="addToCartFromDetail()">
+                            <i class="fas fa-cart-plus"></i>
+                            Thêm vào giỏ hàng
+                        </button>
+                        <button class="btn-wishlist" onclick="toggleWishlist(${currentProduct.id})">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="product-features">
+                        <h4>Đặc điểm nổi bật:</h4>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Chất liệu cao cấp, bền bỉ</li>
+                            <li><i class="fas fa-check"></i> Thiết kế thời trang, hiện đại</li>
+                            <li><i class="fas fa-check"></i> Thoáng khí, thấm hút mồ hôi tốt</li>
+                            <li><i class="fas fa-check"></i> Phù hợp với mọi hoạt động thể thao</li>
+                            <li><i class="fas fa-truck"></i> Miễn phí vận chuyển với đơn hàng trên 500k</li>
+                            <li><i class="fas fa-undo"></i> Đổi trả trong 30 ngày</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            // Update page title
+            document.title = `${currentProduct.name} - SportShop`;
+        }
+
+        function setupEventListeners() {
+            // Size selection
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('size-option')) {
+                    // Remove previous selection
+                    document.querySelectorAll('.size-option').forEach(option => {
+                        option.classList.remove('selected');
+                    });
+                    
+                    // Add selection to clicked option
+                    e.target.classList.add('selected');
+                    selectedSize = e.target.dataset.size;
+                }
+            });
+
+            // Quantity controls
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('quantity-btn')) {
+                    const quantityInput = document.querySelector('.quantity-input');
+                    let quantity = parseInt(quantityInput.value);
+                    
+                    if (e.target.classList.contains('minus') && quantity > 1) {
+                        quantity--;
+                    } else if (e.target.classList.contains('plus')) {
+                        quantity++;
+                    }
+                    
+                    quantityInput.value = quantity;
+                }
+            });
+
+            // Star rating
+            document.addEventListener('click', function(e) {
+                if (e.target.dataset.rating) {
+                    const rating = parseInt(e.target.dataset.rating);
+                    updateStarRating(rating);
+                }
+            });
+
+            // Search functionality
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('search-input');
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function() {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+                    }
+                });
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const query = this.value.trim();
+                        if (query) {
+                            window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+                        }
+                    }
+                });
+            }
+        }
+
+        function addToCartFromDetail() {
+            if (!currentProduct) return;
+
+            // Kiểm tra size selection nếu có nhiều size
+            if (currentProduct.sizes.length > 1 && !selectedSize) {
+                alert('Vui lòng chọn size!');
+                return;
+            }
+
+            const quantity = parseInt(document.querySelector('.quantity-input').value);
+            const size = selectedSize || currentProduct.sizes[0];
+
+            cart.addItem(currentProduct.id, size, quantity);
+        }
+
+        function updateBreadcrumb() {
+            if (currentProduct) {
+                document.getElementById('breadcrumb-category').textContent = getCategoryName(currentProduct.category);
+                document.getElementById('breadcrumb-product').textContent = currentProduct.name;
+            }
+        }
+
+        function loadReviews() {
+            // Load reviews from localStorage or use sample data
+            const reviews = getSampleReviews();
+            displayReviews(reviews);
+        }
+
+        function getSampleReviews() {
+            return [
+                {
+                    id: 1,
+                    name: "Nguyễn Văn A",
+                    rating: 5,
+                    date: "2024-01-15",
+                    text: "Sản phẩm rất tốt, chất lượng như mô tả. Sẽ mua lại lần sau!"
+                },
+                {
+                    id: 2,
+                    name: "Trần Thị B", 
+                    rating: 4,
+                    date: "2024-01-10",
+                    text: "Chất liệu ổn, thiết kế đẹp. Chỉ hơi nhỏ size một chút so với bảng size."
+                },
+                {
+                    id: 3,
+                    name: "Lê Văn C",
+                    rating: 5,
+                    date: "2024-01-05",
+                    text: "Tuyệt vời! Đúng như mong đợi. Giao hàng nhanh, đóng gói cẩn thận."
+                }
+            ];
+        }
+
+        function displayReviews(reviews) {
+            const reviewsList = document.getElementById('reviews-list');
+            
+            if (reviews.length === 0) {
+                reviewsList.innerHTML = '<p class="text-center">Chưa có đánh giá nào cho sản phẩm này.</p>';
+                return;
+            }
+
+            reviewsList.innerHTML = reviews.map(review => `
+                <div class="review-item">
+                    <div class="review-header">
+                        <div>
+                            <div class="reviewer-name">${review.name}</div>
+                            <div class="stars">
+                                ${generateStarRating(review.rating)}
+                            </div>
+                        </div>
+                        <div class="review-date">${formatDate(review.date)}</div>
+                    </div>
+                    <div class="review-text">${review.text}</div>
+                </div>
+            `).join('');
+        }
+
+        function showReviewModal() {
+            if (!auth.isLoggedIn()) {
+                alert('Bạn cần đăng nhập để viết đánh giá!');
+                window.location.href = 'login.html?return=' + encodeURIComponent(window.location.href);
+                return;
+            }
+            
+            document.getElementById('review-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('review-modal').style.display = 'none';
+            document.body.style.overflow = '';
+            
+            // Reset form
+            currentRating = 0;
+            updateStarRating(0);
+            document.getElementById('review-text').value = '';
+        }
+
+        function updateStarRating(rating) {
+            currentRating = rating;
+            const stars = document.querySelectorAll('#star-rating i');
+            
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.className = 'fas fa-star';
+                } else {
+                    star.className = 'far fa-star';
+                }
+            });
+        }
+
+        function submitReview() {
+            if (currentRating === 0) {
+                alert('Vui lòng chọn số sao đánh giá!');
+                return;
+            }
+
+            const reviewText = document.getElementById('review-text').value.trim();
+            if (!reviewText) {
+                alert('Vui lòng nhập nhận xét!');
+                return;
+            }
+
+            // Simulate saving review
+            alert('Cảm ơn bạn đã đánh giá! Nhận xét của bạn đã được ghi nhận.');
+            closeReviewModal();
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        function toggleWishlist(productId) {
+            // Implementation similar to main.js
+            let wishlist = JSON.parse(localStorage.getItem('sportshop_wishlist') || '[]');
+            
+            const index = wishlist.indexOf(productId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showNotification('Đã xóa khỏi danh sách yêu thích', 'info');
+            } else {
+                wishlist.push(productId);
+                showNotification('Đã thêm vào danh sách yêu thích', 'success');
+            }
+            
+            localStorage.setItem('sportshop_wishlist', JSON.stringify(wishlist));
+            updateWishlistUI(productId, wishlist.includes(productId));
+        }
+
+        function updateWishlistUI(productId, isInWishlist) {
+            const wishlistBtn = document.querySelector('.btn-wishlist');
+            if (wishlistBtn) {
+                const icon = wishlistBtn.querySelector('i');
+                if (icon) {
+                    icon.className = isInWishlist ? 'fas fa-heart' : 'far fa-heart';
+                    wishlistBtn.style.color = isInWishlist ? '#ff4757' : '';
+                }
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+    </script>
+
+    <style>
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .star-rating i {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .star-rating i:hover,
+        .star-rating i.fas {
+            color: #ffd700;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2c5aa0;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            max-height: 90vh;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10001;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification-success {
+            background: #4caf50;
+        }
+        
+        .notification-info {
+            background: #2196f3;
+        }
+    </style>
+</body>
+</html>

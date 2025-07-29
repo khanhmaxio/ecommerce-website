@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - SportShop</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            margin-top: 100px;
+        }
+        
+        .cart-header {
+            margin-bottom: 30px;
+        }
+        
+        .cart-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .breadcrumb {
+            color: #6c757d;
+        }
+        
+        .breadcrumb a {
+            color: #2c5aa0;
+            text-decoration: none;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .cart-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+        
+        .cart-items {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-cart i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #e9ecef;
+        }
+        
+        .empty-cart h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+        
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .item-brand {
+            color: #2c5aa0;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .item-size {
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c5aa0;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        
+        .quantity-btn {
+            background: #f8f9fa;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        
+        .quantity-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .quantity-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .quantity-input {
+            border: none;
+            padding: 8px 12px;
+            width: 60px;
+            text-align: center;
+            font-weight: 600;
+            outline: none;
+        }
+        
+        .item-remove {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .item-remove:hover {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .cart-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+        
+        .summary-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 8px 0;
+        }
+        
+        .summary-label {
+            color: #6c757d;
+        }
+        
+        .summary-value {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .discount-section {
+            margin: 20px 0;
+            padding: 20px 0;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .discount-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .discount-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .discount-input input:focus {
+            border-color: #2c5aa0;
+        }
+        
+        .btn-apply {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-apply:hover {
+            background: #545b62;
+        }
+        
+        .discount-message {
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .discount-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .discount-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .total-row {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c5aa0;
+            border-top: 2px solid #2c5aa0;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+        
+        .checkout-section {
+            margin-top: 30px;
+        }
+        
+        .btn-checkout {
+            width: 100%;
+            background: linear-gradient(45deg, #2c5aa0, #1e3d72);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(44, 90, 160, 0.3);
+        }
+        
+        .btn-checkout:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .continue-shopping {
+            text-align: center;
+        }
+        
+        .continue-shopping a {
+            color: #2c5aa0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .continue-shopping a:hover {
+            text-decoration: underline;
+        }
+        
+        .security-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        
+        .security-info i {
+            color: #28a745;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .cart-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .item-image {
+                margin-right: 0;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .cart-item-bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            
+            .cart-summary {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-running"></i> SportShop</h1>
+                </div>
+                
+                <nav class="nav">
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">Danh mục <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="index.html?category=ao">Áo thể thao</a></li>
+                                <li><a href="index.html?category=quan">Quần thể thao</a></li>
+                                <li><a href="index.html?category=giay">Giày thể thao</a></li>
+                                <li><a href="index.html?category=phu-kien">Phụ kiện</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" id="auth-link">Đăng nhập</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="cart-icon">
+                        <a href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cart-count">0</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1><i class="fas fa-shopping-cart"></i> Giỏ hàng của bạn</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Trang chủ</a> / Giỏ hàng
+            </div>
+        </div>
+
+        <div class="cart-content">
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be loaded here -->
+            </div>
+
+            <div class="cart-summary">
+                <h3 class="summary-title">Tóm tắt đơn hàng</h3>
+                
+                <div class="summary-row">
+                    <span class="summary-label">Tạm tính:</span>
+                    <span class="summary-value" id="subtotal">0₫</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span class="summary-label">Phí vận chuyển:</span>
+                    <span class="summary-value" id="shipping-fee">Miễn phí</span>
+                </div>
+                
+                <div class="discount-section">
+                    <div class="discount-input">
+                        <input type="text" id="discount-code" placeholder="Mã giảm giá">
+                        <button class="btn-apply" onclick="applyDiscountCode()">Áp dụng</button>
+                    </div>
+                    <div id="discount-message" class="discount-message" style="display: none;"></div>
+                </div>
+                
+                <div class="summary-row" id="discount-row" style="display: none;">
+                    <span class="summary-label">Giảm giá:</span>
+                    <span class="summary-value" id="discount-amount">0₫</span>
+                </div>
+                
+                <div class="summary-row total-row">
+                    <span class="summary-label">Tổng cộng:</span>
+                    <span class="summary-value" id="total-amount">0₫</span>
+                </div>
+                
+                <div class="checkout-section">
+                    <button class="btn-checkout" id="checkout-btn" onclick="proceedToCheckout()">
+                        <i class="fas fa-credit-card"></i> Tiến hành thanh toán
+                    </button>
+                    
+                    <div class="continue-shopping">
+                        <a href="index.html"><i class="fas fa-arrow-left"></i> Tiếp tục mua sắm</a>
+                    </div>
+                </div>
+                
+                <div class="security-info">
+                    <i class="fas fa-shield-alt"></i>
+                    Thanh toán an toàn với SSL 256-bit encryption
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let appliedDiscount = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            auth.updateAuthUI();
+            cart.updateCartCount();
+            loadCartItems();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Search functionality
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('search-input');
+            
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function() {
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+                    }
+                });
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const query = this.value.trim();
+                        if (query) {
+                            window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+                        }
+                    }
+                });
+            }
+
+            // Discount code input
+            const discountInput = document.getElementById('discount-code');
+            if (discountInput) {
+                discountInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        applyDiscountCode();
+                    }
+                });
+            }
+        }
+
+        function loadCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartItems = cart.getItems();
+
+            if (cartItems.length === 0) {
+                displayEmptyCart();
+                updateSummary();
+                return;
+            }
+
+            let itemsHTML = '';
+            cartItems.forEach(item => {
+                if (item.product) {
+                    itemsHTML += createCartItemHTML(item);
+                }
+            });
+
+            cartItemsContainer.innerHTML = itemsHTML;
+            updateSummary();
+        }
+
+        function displayEmptyCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Giỏ hàng của bạn đang trống</h3>
+                    <p>Hãy thêm một số sản phẩm tuyệt vời vào giỏ hàng của bạn!</p>
+                    <a href="index.html" class="btn-primary" style="margin-top: 20px;">
+                        <i class="fas fa-shopping-bag"></i> Tiếp tục mua sắm
+                    </a>
+                </div>
+            `;
+        }
+
+        function createCartItemHTML(item) {
+            const product = item.product;
+            const itemTotal = product.price * item.quantity;
+
+            return `
+                <div class="cart-item" data-product-id="${item.productId}" data-size="${item.size}">
+                    <div class="item-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    
+                    <div class="item-info">
+                        <div class="item-name">${product.name}</div>
+                        <div class="item-brand">${product.brand}</div>
+                        <div class="item-size">Size: ${item.size}</div>
+                    </div>
+                    
+                    <div class="item-price">${formatPrice(itemTotal)}</div>
+                    
+                    <div class="item-quantity">
+                        <button class="quantity-btn minus" onclick="updateItemQuantity(${item.productId}, '${item.size}', ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
+                        <input type="number" class="quantity-input" value="${item.quantity}" min="1" onchange="updateItemQuantity(${item.productId}, '${item.size}', this.value)">
+                        <button class="quantity-btn plus" onclick="updateItemQuantity(${item.productId}, '${item.size}', ${item.quantity + 1})">+</button>
+                    </div>
+                    
+                    <button class="item-remove" onclick="removeCartItem(${item.productId}, '${item.size}')" title="Xóa sản phẩm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+        }
+
+        function updateItemQuantity(productId, size, newQuantity) {
+            newQuantity = parseInt(newQuantity);
+            if (newQuantity < 1) return;
+
+            cart.updateQuantity(productId, size, newQuantity);
+            loadCartItems();
+        }
+
+        function removeCartItem(productId, size) {
+            if (confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) {
+                cart.removeItem(productId, size);
+                loadCartItems();
+                showNotification('Đã xóa sản phẩm khỏi giỏ hàng', 'info');
+            }
+        }
+
+        function updateSummary() {
+            const subtotal = cart.getTotalPrice();
+            const shippingFee = subtotal >= 500000 ? 0 : 30000;
+            let discountAmount = 0;
+            
+            // Apply discount if exists
+            if (appliedDiscount) {
+                if (appliedDiscount.type === 'percentage') {
+                    discountAmount = subtotal * (appliedDiscount.value / 100);
+                } else {
+                    discountAmount = Math.min(appliedDiscount.value, subtotal);
+                }
+            }
+            
+            const total = subtotal + shippingFee - discountAmount;
+
+            // Update UI
+            document.getElementById('subtotal').textContent = formatPrice(subtotal);
+            document.getElementById('shipping-fee').textContent = shippingFee > 0 ? formatPrice(shippingFee) : 'Miễn phí';
+            document.getElementById('total-amount').textContent = formatPrice(total);
+
+            // Update discount display
+            const discountRow = document.getElementById('discount-row');
+            if (discountAmount > 0) {
+                document.getElementById('discount-amount').textContent = '-' + formatPrice(discountAmount);
+                discountRow.style.display = 'flex';
+            } else {
+                discountRow.style.display = 'none';
+            }
+
+            // Update checkout button
+            const checkoutBtn = document.getElementById('checkout-btn');
+            if (cart.getTotalQuantity() === 0) {
+                checkoutBtn.disabled = true;
+                checkoutBtn.textContent = 'Giỏ hàng trống';
+            } else {
+                checkoutBtn.disabled = false;
+                checkoutBtn.innerHTML = '<i class="fas fa-credit-card"></i> Tiến hành thanh toán';
+            }
+        }
+
+        function applyDiscountCode() {
+            const discountCode = document.getElementById('discount-code').value.trim().toUpperCase();
+            const messageElement = document.getElementById('discount-message');
+
+            if (!discountCode) {
+                showDiscountMessage('Vui lòng nhập mã giảm giá!', 'error');
+                return;
+            }
+
+            const discountResult = cart.applyDiscount(discountCode);
+            
+            if (discountResult.valid) {
+                appliedDiscount = {
+                    code: discountCode,
+                    type: discountResult.description.includes('%') ? 'percentage' : 'fixed',
+                    value: discountResult.description.includes('10%') ? 10 : 
+                           discountResult.description.includes('20%') ? 20 : 50000
+                };
+                
+                showDiscountMessage(`Áp dụng thành công: ${discountResult.description}`, 'success');
+                updateSummary();
+            } else {
+                showDiscountMessage(discountResult.message, 'error');
+            }
+        }
+
+        function showDiscountMessage(message, type) {
+            const messageElement = document.getElementById('discount-message');
+            messageElement.textContent = message;
+            messageElement.className = `discount-message discount-${type}`;
+            messageElement.style.display = 'block';
+
+            // Hide after 5 seconds
+            setTimeout(() => {
+                messageElement.style.display = 'none';
+            }, 5000);
+        }
+
+        function proceedToCheckout() {
+            if (cart.getTotalQuantity() === 0) {
+                alert('Giỏ hàng của bạn đang trống!');
+                return;
+            }
+
+            // Save discount to localStorage if applied
+            if (appliedDiscount) {
+                localStorage.setItem('appliedDiscount', JSON.stringify(appliedDiscount));
+            }
+
+            // Redirect to checkout
+            window.location.href = 'checkout.html';
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+    </script>
+
+    <style>
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10001;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification-info {
+            background: #2196f3;
+        }
+        
+        .notification-success {
+            background: #4caf50;
+        }
+        
+        .notification-error {
+            background: #f44336;
+        }
+    </style>
+</body>
+</html>
